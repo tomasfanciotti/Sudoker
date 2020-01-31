@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project default="init" basedir=".">
+<project default="run" basedir=".">
 
 
     <target name="init">
