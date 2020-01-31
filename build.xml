@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<project default="init" basedir=".">
+
+
+    <target name="init">
+        <property name="nombre" value="Definiciones para Tareas"/>
+        <echo message="----------- ${nombre}  --------"/>
+
+        <!-- Definicion de rutas -->
+        <property name="out-dir" value="manual-out" />
+        <property name="src-dir" value="src"/>
+        <property name="bin-dir" value="${out-dir}/bin"/>
+
+        <!-- Definicion de especificaciones JAR -->
+        <property name="jar-file" value="Helloworld"/>
+        <property name="jar-mainclass" value="model.HelloWorld"/>
+
+        <!-- Definicion de opciones de compilacion -->
+        <property name="debug"          value="on"/>
+        <property name="optimize"       value="off"/>
+        <property name="deprecation"    value="off"/>
+        <property name="build.compiler" value="modern"/>
+        <property name="target.vm"      value="1.8"/>
+        <property name="source.vm"      value="1.8"/>
+    </target>
+
+
+    <target name="compile" depends="init">
+        <echo message="------ Compilando Clases ------"/>
+
+        <mkdir dir="${bin-dir}"/>
+
+        <javac srcdir="${src-dir}"
+               destdir="${bin-dir}"
+               debug="${debug}"
+               optimize="${optimize}"
+               deprecation="${deprecation}"
+               target="${target.vm}"
+               source="${source.vm}"
+               includeantruntime="true">
+        </javac>
+    </target>
+
+
+    <target name="jar" depends="compile">
+        <echo message="------ Generando Archivo JAR ------"/>
+
+        <jar jarfile="${out-dir}/${jar-file}.jar"
+             basedir="${bin-dir}"
+             includes="**">
+             <manifest>
+                 <attribute name="Main-Class" value="${jar-mainclass}"/>
+             </manifest>
+        </jar>
+    </target>
+
+
+    <target name="run" depends="jar">
+        <echo message="------ CORRIENDO ARCHIVO JAR (nuevo) ------"/>
+        <java jar="${out-dir}/${jar-file}.jar" fork="true"/>
+    </target>
+
+
+    <target name="run-preview" depends="init">
+        <echo message="------ CORRIENDO ARCHIVO JAR (compilado) ------"/>
+        <java jar="${out-dir}/${jar-file}.jar" fork="true"/>
+    </target>
+
+
+    <target name="clean">
+        <echo message="------ ELIMINANDO ARCHIVOS DE COMPILACION ------"/>
+        <delete dir="${out-dir}"/>
+    </target>
+
+</project>
+
